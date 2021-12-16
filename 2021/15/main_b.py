@@ -4,7 +4,19 @@ with open("data.txt") as f:
     input_data = f.read()
 
 grid = np.array([list(x) for x in input_data.split("\n")], dtype=int)
-shortest = np.zeros(grid.shape, dtype=int)
+new_size = (len(grid) * 5, len(grid[0]) * 5)
+new_grid = np.zeros((new_size), dtype=int)
+
+for i in range(5):
+    for j in range(5):
+        x_min = i * len(grid)
+        y_min = j * len(grid)
+        new_grid[x_min : x_min + len(grid), y_min : y_min + len(grid)] = grid + i + j
+
+new_grid = np.where(new_grid > 9, new_grid - 9, new_grid)
+grid = new_grid
+
+shortest = np.zeros(new_size, dtype=int)
 wall = 1000000
 grid_len = len(grid)
 i_max = 2 * grid_len - 1
